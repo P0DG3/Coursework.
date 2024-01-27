@@ -17,7 +17,7 @@ namespace coursework
         
         Image player;
         List<string> playerMovements = new List<string>();
-        bool move_left, move_right, move_up, move_down;
+        bool move_left, move_right, move_up, move_down, gameOver;
         float player_x = 75;
         float player_y = 75;
         int player_height = 75;
@@ -75,7 +75,26 @@ namespace coursework
             {
                 move_down = true;
             }
-
+            if (e.KeyCode == Keys.Up)
+            {
+                string direction = "Up";
+                shootTear(Up);
+            }
+            if (e.KeyCode == Keys.Down)
+            {
+                string direction = "Down";
+                shootTear(Down);
+            }
+            if (e.KeyCode == Keys.Left)
+            {
+                string direction = "Left";
+                shootTear(Left);
+            }
+            if (e.KeyCode == Keys.Right)
+            {
+                string direction = "Right";
+                shootTear(Right);
+            }
         }
 
         private void KeyIsUp(object sender, KeyEventArgs e)
@@ -110,6 +129,10 @@ namespace coursework
 
         }
 
+        private void shootTear()
+        {
+            
+        }
         
 
         private void SetUp()
