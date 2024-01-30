@@ -5,24 +5,29 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 
 namespace coursework
 {
     public partial class Form1 : Form
     {
-        
+        int EnemyCount = 4;
+        int EnemySpeed = 5;
+        int Score;
         
         Image player;
         List<string> playerMovements = new List<string>();
         bool move_left, move_right, move_up, move_down, gameOver;
-        float player_x = 75;
-        float player_y = 75;
+        int player_x = 75;
+        int player_y = 75;
         int player_height = 75;
         int player_width = 75;
-        float player_speed = 25;
+        int player_speed = 25;
+        
 
 
         public Form1()
@@ -78,22 +83,22 @@ namespace coursework
             if (e.KeyCode == Keys.Up)
             {
                 string direction = "Up";
-                shootTear(Up);
+                TearShooting(direction);
             }
             if (e.KeyCode == Keys.Down)
             {
                 string direction = "Down";
-                shootTear(Down);
+                TearShooting(direction);
             }
             if (e.KeyCode == Keys.Left)
             {
                 string direction = "Left";
-                shootTear(Left);
+                TearShooting(direction);
             }
             if (e.KeyCode == Keys.Right)
             {
                 string direction = "Right";
-                shootTear(Right);
+                TearShooting(direction);
             }
         }
 
@@ -103,7 +108,7 @@ namespace coursework
             {
                 move_left = false;
             }
-           
+
             else if (e.KeyCode == Keys.D)
             {
                 move_right = false;
@@ -124,16 +129,42 @@ namespace coursework
             Canvas.DrawImage(player, player_x, player_y, player_height, player_width);
         }
 
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TearShooting(string direction)
+        {
+            Tear shootTear = new Tear();
+            shootTear.direction = direction;
+            shootTear.tearLeft = player_x + (player_width / 2);
+            shootTear.tearTop = player_y + (player_height / 2);
+            shootTear.spawnTear(this);
+           
+
+        }
         private void timer1_Tick(object sender, EventArgs e)
         {
 
         }
-
-        private void shootTear()
+        //doesn't actually spawn the enemy yet (need to do some timery things probably)
+        private void SpawnEnemy()
         {
+            Random rnd = new Random();
+
+            PictureBox Enemy = new PictureBox();
+            Enemy.Tag = "enemy";
+            Enemy.Image = Image.FromFile("sigma.png");
+            Enemy.Left = rnd.Next(0, 1000);
+            Enemy.Top = rnd.Next(0, 900);
+            Enemy.SizeMode = PictureBoxSizeMode.AutoSize;
+            this.Controls.Add(Enemy);
             
+
         }
-        
+
+         
 
         private void SetUp()
         {
@@ -144,7 +175,7 @@ namespace coursework
             this.DoubleBuffered = true;
             //load player files into a list
             playerMovements = Directory.GetFiles("player", "*.png").ToList();
-            player = Image.FromFile("doom.png");
+            player = Image.FromFile("isaac.png");
         }
 
         private void AnimatePlayer(int start, int end) { }
