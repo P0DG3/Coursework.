@@ -16,7 +16,8 @@ namespace coursework
         public string direction;
         public int tearLeft;
         public int tearTop;
-        
+        public bool tearCooldown = true;
+        Image image = Image.FromFile("tear.png");
 
         private int speed = 25;
         private PictureBox tear = new PictureBox();
@@ -24,13 +25,13 @@ namespace coursework
 
         public void spawnTear(Form form)
         {
-            
-            tear.BackColor = Color.LightBlue;
-            tear.Size = new Size(20,20);
+            tear.BackColor = Color.Transparent;
+            tear.Size = new Size(25,23);
             tear.Tag = "tear";
             tear.Top = tearTop;
             tear.Left = tearLeft;
             tear.BringToFront();
+            tear.Image = image;
             
 
             form.Controls.Add(tear);

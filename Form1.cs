@@ -5,20 +5,24 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Media;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
+
 
 
 namespace coursework
 {
     public partial class Form1 : Form
     {
-        int EnemyCount = 4;
-        int EnemySpeed = 5;
+        int TearCooldown = 0;
         int Score;
-        
+
         Image player;
         List<string> playerMovements = new List<string>();
         bool move_left, move_right, move_up, move_down, gameOver;
@@ -27,18 +31,21 @@ namespace coursework
         int player_height = 75;
         int player_width = 75;
         int player_speed = 25;
-        
+        int player_health = 3;
+
 
 
         public Form1()
         {
             InitializeComponent();
             SetUp();
+            EnemySystem();
         }
 
         private void TimerEvent(object sender, EventArgs e)
         {
-
+            int EnemySpeed = 5;
+            TearCooldown -= 1;
             //check if the player is touching the boundary on the left
             if (move_left && player_x > 125)
             {
@@ -55,11 +62,35 @@ namespace coursework
                 player_y -= player_speed;
             }
             //the bottom
-            else if (move_down && player_y + player_height +125 < this.ClientSize.Height)
+            else if (move_down && player_y + player_height + 125 < this.ClientSize.Height)
             {
                 player_y += player_speed;
             }
-            this.Invalidate();
+
+            //moves the enemy towards the player (looks buggy but it works) 
+            foreach (Control x in Controls)
+            {
+                if (x is PictureBox && (string)x.Tag == "enemy")
+                {
+                    if (x.Left > player_x)
+                    {
+                        x.Left -= EnemySpeed;
+                    }
+                    if (x.Left < player_x)
+                    {
+                        x.Left += EnemySpeed;
+                    }
+                    if (x.Top > player_y)
+                    {
+                        x.Top -= EnemySpeed;
+                    }
+                    if (x.Top < player_y)
+                    {
+                        x.Top += EnemySpeed;
+                    }
+                }
+            }
+            Invalidate();
         }
 
         private void KeyIsDown(object sender, KeyEventArgs e)
@@ -133,49 +164,73 @@ namespace coursework
         {
 
         }
+        
+
+
+
+
 
         private void TearShooting(string direction)
         {
-            Tear shootTear = new Tear();
-            shootTear.direction = direction;
-            shootTear.tearLeft = player_x + (player_width / 2);
-            shootTear.tearTop = player_y + (player_height / 2);
-            shootTear.spawnTear(this);
-           
+            if (TearCooldown <= 0)
+            {
 
-        }
-        private void timer1_Tick(object sender, EventArgs e)
-        {
+                Tear shootTear = new Tear();
 
-        }
-        //doesn't actually spawn the enemy yet (need to do some timery things probably)
-        private void SpawnEnemy()
-        {
-            Random rnd = new Random();
-
-            PictureBox Enemy = new PictureBox();
-            Enemy.Tag = "enemy";
-            Enemy.Image = Image.FromFile("sigma.png");
-            Enemy.Left = rnd.Next(0, 1000);
-            Enemy.Top = rnd.Next(0, 900);
-            Enemy.SizeMode = PictureBoxSizeMode.AutoSize;
-            this.Controls.Add(Enemy);
+                shootTear.direction = direction;
+                shootTear.tearLeft = player_x + (player_width / 2);
+                shootTear.tearTop = player_y + (player_height / 2);
+                TearCooldown = 8;
+                shootTear.spawnTear(this);
+            }
             
-
+            
         }
 
-         
+       
+
+
+        //system for spawning enemies (will be tweaked later to not spawn them in the starting room) 
+        private void EnemySystem()
+        {
+            bool moreEnemies = true;
+            int EnemyCount = 4;
+            while (moreEnemies)
+            {
+                Random rnd = new Random();
+                int i = 0;
+                while (i < EnemyCount)
+                {
+                    //define the enemy and its properties
+                    PictureBox Enemy = new PictureBox();
+                    Enemy.Tag = "enemy";
+                    Enemy.Image = Image.FromFile("sigma.png");
+                    Enemy.Left = rnd.Next(125, 1000);
+                    Enemy.Top = rnd.Next(125, 900);
+                    Enemy.SizeMode = PictureBoxSizeMode.AutoSize;
+                    Controls.Add(Enemy);
+                    i++;
+                }
+                moreEnemies = false;
+            }
+
+            
+        }
+
+
+
 
         private void SetUp()
         {
             //set initial background image (tutorial with controls on screen)
-            this.BackgroundImage = Image.FromFile("background1.png.");
-            this.BackgroundImageLayout = ImageLayout.Stretch;
-            //'DoubleBuffered' makes the animation of the player look smoother
-            this.DoubleBuffered = true;
+            BackgroundImage = Image.FromFile("background1.png.");
+            BackgroundImageLayout = ImageLayout.Stretch;
+            //'DoubleBuffered' makes the animation of the player look smoother (not animated yet)
+            DoubleBuffered = true;
             //load player files into a list
             playerMovements = Directory.GetFiles("player", "*.png").ToList();
             player = Image.FromFile("isaac.png");
+           
         }
 
         private void AnimatePlayer(int start, int end) { }
