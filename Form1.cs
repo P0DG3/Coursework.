@@ -38,8 +38,9 @@ namespace coursework
         public Form1()
         {
             InitializeComponent();
-            SetUp();
+            SetUp(); 
             EnemySystem();
+            
         }
 
         private void TimerEvent(object sender, EventArgs e)
@@ -90,7 +91,26 @@ namespace coursework
                     }
                 }
             }
+            TearCollision(this);
             Invalidate();
+        }
+
+
+
+        private static void TearCollision(Form form)
+        {
+            Tear tear = new Tear();
+            foreach (Control x in form.Controls)
+            {
+                if (x is PictureBox && (string)x.Tag == "enemy")
+                {
+                    if (x.Left == tear.tearLeft && x.Top == tear.tearTop)
+                    {
+                        form.Controls.Remove(x);
+                        form.Controls.Remove(tear.tear);
+                    }
+                }
+            }
         }
 
         private void KeyIsDown(object sender, KeyEventArgs e)
@@ -187,11 +207,8 @@ namespace coursework
             
         }
 
-       
-
-
-        //system for spawning enemies (will be tweaked later to not spawn them in the starting room) 
-        private void EnemySystem()
+        //system for spawning enemies (will be tweaked later to not spawn them in the starting room)
+        public void EnemySystem()
         {
             bool moreEnemies = true;
             int EnemyCount = 4;
@@ -202,25 +219,28 @@ namespace coursework
                 while (i < EnemyCount)
                 {
                     //define the enemy and its properties
-                    PictureBox Enemy = new PictureBox();
-                    Enemy.Tag = "enemy";
-                    Enemy.Image = Image.FromFile("sigma.png");
-                    Enemy.Left = rnd.Next(125, 1000);
-                    Enemy.Top = rnd.Next(125, 900);
-                    Enemy.SizeMode = PictureBoxSizeMode.AutoSize;
+                    PictureBox Enemy = new PictureBox
+                    {
+                        Tag = "enemy",
+                        Image = Image.FromFile("sigma.png"),
+                        Left = rnd.Next(125, 1000),
+                        Top = rnd.Next(125, 900),
+                        SizeMode = PictureBoxSizeMode.AutoSize
+                    };
                     Controls.Add(Enemy);
                     i++;
                 }
                 moreEnemies = false;
             }
-
-            
         }
 
 
 
 
-        private void SetUp()
+
+
+
+            private void SetUp()
         {
             //set initial background image (tutorial with controls on screen)
             BackgroundImage = Image.FromFile("background1.png.");

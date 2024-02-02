@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using System.Security.Cryptography.X509Certificates;
+using System.Drawing.Text;
 
 namespace coursework
 {
-    class Tear
+    public class Tear
     {
         //defines the variables for the tear class
         //will change the colour and maybe the size of the tear later to indicate different tear types
@@ -22,8 +24,10 @@ namespace coursework
         Image image = Image.FromFile("tear.png");
 
         private int speed = 25;
-        private PictureBox tear = new PictureBox();
+        public PictureBox tear = new PictureBox();
         private Timer tearTimer = new Timer();
+
+        
 
         public void spawnTear(Form form)
         {
@@ -35,6 +39,7 @@ namespace coursework
             tear.BringToFront();
             tear.Image = image;
             
+            
 
             form.Controls.Add(tear);
 
@@ -42,7 +47,8 @@ namespace coursework
             tearTimer.Tick += new EventHandler(tearTimerEvent);
             tearTimer.Start();
         }
-
+        
+        
 
         private void tearTimerEvent(object sender, EventArgs e)
         {
@@ -64,17 +70,29 @@ namespace coursework
             {
                 tear.Left += speed;
             }
+
+
+
+
+             void stopTear()
+            {
+                
+                tearTimer.Stop();
+                tearTimer.Dispose();
+                tear.Dispose();
+                tearTimer = null;
+                tear = null;
+            }
+
+
             
 
             //despawn tear and its timer when tear hits any of the edges edges of screen
             // sets the tear and its timer to null (being memory efficient waow). (also doesn't lag the form to shit)
             if (tear.Top < 50 || tear.Top > 950  || tear.Left < 50 || tear.Left > 1800 )
             {
-                tearTimer.Stop();
-                tearTimer.Dispose();
-                tear.Dispose();
-                tearTimer = null;
-                tear = null;
+                stopTear();
+                
             }
                 
         }
