@@ -91,27 +91,32 @@ namespace coursework
                     }
                 }
             }
-            TearCollision(this);
-            Invalidate();
+            TearCollision();
+                Invalidate();
         }
-
-
-
-        private static void TearCollision(Form form)
+        //despawns the tears and the enemies when they collide
+        public void TearCollision()
         {
-            Tear tear = new Tear();
-            foreach (Control x in form.Controls)
+
+            foreach (Control control in Controls)
             {
-                if (x is PictureBox && (string)x.Tag == "enemy")
+                foreach (Control x in Controls)
                 {
-                    if (x.Left == tear.tearLeft && x.Top == tear.tearTop)
+                    if (control is PictureBox && (string)control.Tag == "tear" && x is PictureBox && (string)x.Tag == "enemy")
                     {
-                        form.Controls.Remove(x);
-                        form.Controls.Remove(tear.tear);
+                        if (control.Bounds.IntersectsWith(x.Bounds))
+                        {
+                            Controls.Remove(control);
+                            ((PictureBox)control).Dispose();
+                            Controls.Remove(x);
+                            ((PictureBox)x).Dispose();
+                        }
                     }
                 }
             }
         }
+
+
 
         private void KeyIsDown(object sender, KeyEventArgs e)
         {
@@ -232,6 +237,7 @@ namespace coursework
                 }
                 moreEnemies = false;
             }
+           
         }
 
 

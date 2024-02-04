@@ -27,19 +27,19 @@ namespace coursework
         public PictureBox tear = new PictureBox();
         private Timer tearTimer = new Timer();
 
-        
+
 
         public void spawnTear(Form form)
         {
             tear.BackColor = Color.Transparent;
-            tear.Size = new Size(25,23);
+            tear.Size = new Size(25, 23);
             tear.Tag = "tear";
             tear.Top = tearTop;
             tear.Left = tearLeft;
             tear.BringToFront();
             tear.Image = image;
-            
-            
+
+
 
             form.Controls.Add(tear);
 
@@ -47,8 +47,8 @@ namespace coursework
             tearTimer.Tick += new EventHandler(tearTimerEvent);
             tearTimer.Start();
         }
-        
-        
+
+
 
         private void tearTimerEvent(object sender, EventArgs e)
         {
@@ -62,21 +62,19 @@ namespace coursework
             {
                 tear.Top += speed;
             }
-            else if(direction == "Left")
+            else if (direction == "Left")
             {
                 tear.Left -= speed;
             }
-            else if(direction == "Right")
+            else if (direction == "Right")
             {
                 tear.Left += speed;
             }
 
 
-
-
-             void stopTear()
+            void stopTear()
             {
-                
+
                 tearTimer.Stop();
                 tearTimer.Dispose();
                 tear.Dispose();
@@ -85,17 +83,21 @@ namespace coursework
             }
 
 
-            
+
 
             //despawn tear and its timer when tear hits any of the edges edges of screen
             // sets the tear and its timer to null (being memory efficient waow). (also doesn't lag the form to shit)
-            if (tear.Top < 50 || tear.Top > 950  || tear.Left < 50 || tear.Left > 1800 )
+            if (tear.Top < 50 || tear.Top > 950 || tear.Left < 50 || tear.Left > 1800)
             {
                 stopTear();
-                
+
             }
-                
+
         }
+
+        
     }
 }
+
+
 
