@@ -22,7 +22,8 @@ namespace coursework
     {
         int TearCooldown = 0;
         int Score;
-
+        
+        Image background = Image.FromFile("tutorialRoom.png");
         Image player;
         List<string> playerMovements = new List<string>();
         bool move_left, move_right, move_up, move_down, gameOver;
@@ -227,7 +228,7 @@ namespace coursework
                     PictureBox Enemy = new PictureBox
                     {
                         Tag = "enemy",
-                        Image = Image.FromFile("sigma.png"),
+                        Image = Image.FromFile("clotty.png"),
                         Left = rnd.Next(125, 1000),
                         Top = rnd.Next(125, 900),
                         SizeMode = PictureBoxSizeMode.AutoSize
@@ -249,7 +250,7 @@ namespace coursework
             private void SetUp()
         {
             //set initial background image (tutorial with controls on screen)
-            BackgroundImage = Image.FromFile("background1.png.");
+            BackgroundImage = background;
             BackgroundImageLayout = ImageLayout.Stretch;
             //'DoubleBuffered' makes the animation of the player look smoother (not animated yet)
             DoubleBuffered = true;
