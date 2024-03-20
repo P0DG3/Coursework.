@@ -9,12 +9,6 @@ using System.Windows.Forms;
 namespace coursework
 {
     class Enemy1
-    {
-        //fuck classes stupid bollocks won't let me pass functions and variables around stupid fucking shit. 
-
-
-
-
-    }
+    {}
 }
 

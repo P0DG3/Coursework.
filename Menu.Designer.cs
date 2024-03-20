@@ -62,7 +62,7 @@
             this.leaderboard.Size = new System.Drawing.Size(182, 38);
             this.leaderboard.TabIndex = 2;
             this.leaderboard.UseVisualStyleBackColor = true;
-            this.leaderboard.Click += new System.EventHandler(this.button2_Click);
+            this.leaderboard.Click += new System.EventHandler(this.Leaderboard_Click);
             // 
             // newgame
             // 
@@ -75,7 +75,7 @@
             this.newgame.TabIndex = 1;
             this.newgame.Text = "\r\n";
             this.newgame.UseVisualStyleBackColor = false;
-            this.newgame.Click += new System.EventHandler(this.button1_Click);
+            this.newgame.Click += new System.EventHandler(this.NewGame_Click);
             // 
             // Menu
             // 

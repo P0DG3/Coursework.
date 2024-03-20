@@ -23,7 +23,7 @@ namespace coursework
         
         
         // game starting section:
-        private void button1_Click(object sender, EventArgs e)
+        private void NewGame_Click(object sender, EventArgs e)
         {
 
             Thread thread = new Thread(Form_running);
@@ -35,13 +35,13 @@ namespace coursework
         }
 
         // score board section:
-        private void load_scores()
+        private void Load_scores()
         {
             Application.Run(new ScoreBoard());
         }
-        private void button2_Click(object sender, EventArgs e)
+        private void Leaderboard_Click(object sender, EventArgs e)
         {
-            Thread thread = new Thread(load_scores);
+            Thread thread = new Thread(Load_scores);
             thread.Start();
         }
 

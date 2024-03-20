@@ -21,7 +21,7 @@ namespace coursework
     public partial class Form1 : Form
     {
         int TearCooldown = 0;
-        int Score;
+        public static int Score = 0;
         
         Image background = Image.FromFile("tutorialRoom.png");
         Image player;
@@ -32,7 +32,7 @@ namespace coursework
         int player_height = 75;
         int player_width = 75;
         int player_speed = 25;
-        int player_health = 3;
+        
 
 
 
@@ -92,7 +92,8 @@ namespace coursework
                     }
                 }
             }
-            TearCollision();
+                PlayerCollision();
+                TearCollision();
                 Invalidate();
         }
         //despawns the tears and the enemies when they collide
@@ -111,13 +112,44 @@ namespace coursework
                             ((PictureBox)control).Dispose();
                             Controls.Remove(x);
                             ((PictureBox)x).Dispose();
+                            Score += 100;
                         }
                     }
                 }
             }
         }
 
+        public void PlayerCollision()
+        {
+            foreach (Control x in Controls)
+            {
+                if (x is PictureBox && (string)x.Tag == "enemy")
+                {
+                    if (Get_Player_Hitbox().IntersectsWith(x.Bounds))
+                    {
+                        Controls.Remove(x);
+                        ((PictureBox)x).Dispose();
+                        Invalidate();
+                        GameOver();
+                    }
+                }
+            }
+        }
+        private void GameOver()
+        {
+            //write score to file
+            
+            System.IO.File.WriteAllText("Scores.txt", Score + Environment.NewLine); 
 
+            new Thread(() => Application.Run(new GameOver(Score))).Start();
+            Close();
+        }
+        private Rectangle Get_Player_Hitbox()
+        {
+            //this is the hitbox for the player
+            Rectangle playerHitbox = new Rectangle(player_x, player_y, player_width, player_height);
+            return playerHitbox;
+        }
 
         private void KeyIsDown(object sender, KeyEventArgs e)
         {
@@ -187,14 +219,7 @@ namespace coursework
         }
 
         private void timer2_Tick(object sender, EventArgs e)
-        {
-
-        }
-        
-
-
-
-
+        {}
 
         private void TearShooting(string direction)
         {
@@ -206,7 +231,7 @@ namespace coursework
                 shootTear.direction = direction;
                 shootTear.tearLeft = player_x + (player_width / 2);
                 shootTear.tearTop = player_y + (player_height / 2);
-                TearCooldown = 8;
+                TearCooldown = 5;
                 shootTear.spawnTear(this);
             }
             
@@ -228,6 +253,7 @@ namespace coursework
                     PictureBox Enemy = new PictureBox
                     {
                         Tag = "enemy",
+                        BackColor = Color.Transparent,
                         Image = Image.FromFile("clotty.png"),
                         Left = rnd.Next(125, 1000),
                         Top = rnd.Next(125, 900),
@@ -238,7 +264,6 @@ namespace coursework
                 }
                 moreEnemies = false;
             }
-           
         }
 
 
@@ -257,9 +282,7 @@ namespace coursework
             //load player files into a list
             playerMovements = Directory.GetFiles("player", "*.png").ToList();
             player = Image.FromFile("isaac.png");
-           
+            Score = 0;
         }
-
-        private void AnimatePlayer(int start, int end) { }
     }
 }
