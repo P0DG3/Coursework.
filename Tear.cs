@@ -15,7 +15,7 @@ namespace coursework
     {
         //defines the variables for the tear class
         //will change the colour and maybe the size of the tear later to indicate different tear types
-        //(e.g. red for more damage, bigger -> slower, etc.) 
+        //(e.g. red for more damage, bigger -> slower, etc.)
         public string direction;
         public int tearLeft;
         public int tearTop;
@@ -38,8 +38,11 @@ namespace coursework
             tear.Left = tearLeft;
             tear.BringToFront();
             tear.Image = image;
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
 
             form.Controls.Add(tear);
 
@@ -47,8 +50,11 @@ namespace coursework
             tearTimer.Tick += new EventHandler(tearTimerEvent);
             tearTimer.Start();
         }
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
 
         private void tearTimerEvent(object sender, EventArgs e)
         {
@@ -72,9 +78,16 @@ namespace coursework
             }
 
 
+<<<<<<< Updated upstream
             void stopTear()
             {
 
+=======
+
+
+             void DespawnTear()
+            {
+>>>>>>> Stashed changes
                 tearTimer.Stop();
                 tearTimer.Dispose();
                 tear.Dispose();
@@ -83,6 +96,7 @@ namespace coursework
             }
 
 
+<<<<<<< Updated upstream
 
 
             //despawn tear and its timer when tear hits any of the edges edges of screen
@@ -93,6 +107,16 @@ namespace coursework
 
             }
 
+=======
+
+            //despawn tear and its timer when tear hits any of the edges edges of screen
+            // sets the tear and its timer to null (being memory efficient waow).
+            // (also doesn't lag the form to shit)
+            if (tear.Top < 50 || tear.Top > 950  || tear.Left < 50 || tear.Left > 1800 )
+            {
+                DespawnTear();
+            }
+>>>>>>> Stashed changes
         }
 
         

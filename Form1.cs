@@ -21,9 +21,14 @@ namespace coursework
     public partial class Form1 : Form
     {
         int TearCooldown = 0;
+<<<<<<< Updated upstream
         public static int Score = 0;
         
         Image background = Image.FromFile("tutorialRoom.png");
+=======
+        int Score;
+        //Player stuff
+>>>>>>> Stashed changes
         Image player;
         List<string> playerMovements = new List<string>();
         bool move_left, move_right, move_up, move_down, gameOver;
@@ -39,9 +44,8 @@ namespace coursework
         public Form1()
         {
             InitializeComponent();
-            SetUp(); 
+            SetUp();
             EnemySystem();
-            
         }
 
         private void TimerEvent(object sender, EventArgs e)
@@ -218,8 +222,14 @@ namespace coursework
             Canvas.DrawImage(player, player_x, player_y, player_height, player_width);
         }
 
+<<<<<<< Updated upstream
         private void timer2_Tick(object sender, EventArgs e)
         {}
+=======
+
+
+
+>>>>>>> Stashed changes
 
         private void TearShooting(string direction)
         {
@@ -234,8 +244,6 @@ namespace coursework
                 TearCooldown = 5;
                 shootTear.spawnTear(this);
             }
-            
-            
         }
 
         //system for spawning enemies (will be tweaked later to not spawn them in the starting room)
@@ -282,7 +290,10 @@ namespace coursework
             //load player files into a list
             playerMovements = Directory.GetFiles("player", "*.png").ToList();
             player = Image.FromFile("isaac.png");
+<<<<<<< Updated upstream
             Score = 0;
+=======
+>>>>>>> Stashed changes
         }
     }
 }
