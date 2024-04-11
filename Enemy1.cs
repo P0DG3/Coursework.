@@ -9,6 +9,7 @@ using System.Windows.Forms;
 namespace coursework
 {
     class Enemy1
+<<<<<<< Updated upstream
     {}
 =======
     {
